@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, ChevronDown, Calendar, Store, CheckCircle2, XCircle, UserPlus, Eye, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
-import StoreDetailsModal from '../../components/StoreDetailsModal';
+import StoreDetailsModal_Admin from '../../components/StoreDetailsModal_Admin';
 
 export default function AdminStores() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -211,7 +211,7 @@ export default function AdminStores() {
 
       </div>
 
-      <StoreDetailsModal 
+      <StoreDetailsModal_Admin 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         store={selectedStore}

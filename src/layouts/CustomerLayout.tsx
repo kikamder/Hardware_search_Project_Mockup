@@ -106,7 +106,7 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto p-6">
+        <div className="flex-1 overflow-auto px-6 pb-6 pt-0">
           {children}
         </div>
       </main>

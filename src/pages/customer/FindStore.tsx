@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useAppContext } from '../../AppContext';
 import { mockHardware, mockStores } from '../../data';
 import { Cpu, SquareDashedBottom, MonitorPlay, MemoryStick, HardDrive, Battery, Fan, Store as StoreIcon, MapPin, Star, AlertCircle, Heart } from 'lucide-react';
-import StoreDetailsModal from '../../components/StoreDetailsModal';
+import StoreDetailsModal_Customer from '../../components/StoreDetailsModal_Customer';
 
 export default function FindStore() {
   const { navigate, selectedHardwareIds } = useAppContext();
@@ -192,7 +192,7 @@ export default function FindStore() {
 
       </div>
 
-      <StoreDetailsModal 
+      <StoreDetailsModal_Customer 
         isOpen={!!selectedStoreModal} 
         onClose={() => setSelectedStoreModal(null)} 
         store={selectedStoreModal} 

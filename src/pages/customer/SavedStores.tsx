@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { mockStores } from '../../data';
 import { Star, Heart } from 'lucide-react';
-import StoreDetailsModal from '../../components/StoreDetailsModal';
+import StoreDetailsModal_Customer from '../../components/StoreDetailsModal_Customer';
 
 export default function SavedStores() {
   const [savedStores, setSavedStores] = useState(mockStores);
@@ -50,7 +50,7 @@ export default function SavedStores() {
         ))}
       </div>
 
-      <StoreDetailsModal 
+      <StoreDetailsModal_Customer 
         isOpen={!!selectedStoreModal} 
         onClose={() => setSelectedStoreModal(null)} 
         store={selectedStoreModal} 

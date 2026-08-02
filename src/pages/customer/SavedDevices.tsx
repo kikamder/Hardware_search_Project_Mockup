@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Search, Trash2, Store } from 'lucide-react';
+import StoreDetailsModal_Customer from '../../components/StoreDetailsModal_Customer';
 
 export default function SavedDevices() {
+  const [selectedStoreModal, setSelectedStoreModal] = useState<any>(null);
   const devices = [
     { id: 1, name: 'NVIDIA RTX 4070 SUPER', store: 'SpeedCom', location: 'กรุงเทพมหานคร', price: '24,900.-', date: '20/07/2026 14:32', iconColor: 'bg-blue-600' },
     { id: 2, name: 'KINGSTON 32GB (16*2)', store: 'JIB Online', location: 'นนทบุรี', price: '2,900.-', date: '19/07/2026 11:08', iconColor: 'bg-green-600' },
@@ -66,7 +68,10 @@ export default function SavedDevices() {
                   </td>
                   <td className="py-6 px-6">
                     <div className="flex items-center justify-center gap-4">
-                      <button className="border border-slate-200 bg-white text-blue-600 font-medium rounded-xl px-4 py-1.5 hover:border-blue-300 hover:bg-blue-50 transition-all text-sm shadow-sm">
+                      <button 
+                        onClick={() => setSelectedStoreModal({ name: device.store, location: device.location })}
+                        className="border border-blue-600 bg-white text-blue-600 font-medium rounded-lg px-4 py-2 hover:bg-blue-50 transition-all text-sm shadow-sm whitespace-nowrap"
+                      >
                         ดูร้านค้า
                       </button>
                       <button className="text-red-500 hover:scale-110 transition-transform opacity-80 hover:opacity-100">
@@ -82,6 +87,12 @@ export default function SavedDevices() {
           </table>
         </div>
       </div>
+
+      <StoreDetailsModal_Customer 
+        isOpen={!!selectedStoreModal} 
+        onClose={() => setSelectedStoreModal(null)} 
+        store={selectedStoreModal} 
+      />
     </div>
   );
 }
