@@ -6,6 +6,9 @@ import {defineConfig} from 'vite';
 export default defineConfig(() => {
   return {
     plugins: [react(), tailwindcss()],
+    preview: {
+    allowedHosts: ['hardware-search-project-mockup.onrender.com'],
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
@@ -20,3 +23,4 @@ export default defineConfig(() => {
     },
   };
 });
+
