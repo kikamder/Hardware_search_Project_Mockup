@@ -60,15 +60,6 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
                 <Plus className="w-5 h-5 mr-3" />
                 อุปกรณ์ที่บันทึกไว้
               </button>
-              <button
-                onClick={() => navigate('CUSTOMER_DEVICE_FOLDERS')}
-                className={`w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all ${
-                  currentView === 'CUSTOMER_DEVICE_FOLDERS' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-white/50'
-                }`}
-              >
-                <Folder className="w-5 h-5 mr-3" />
-                แฟ้มอุปกรณ์
-              </button>
             </>
           )}
         </nav>
@@ -90,15 +81,23 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
             </button>
           ) : (
             <div className="flex items-center space-x-4">
+              {currentView === 'CUSTOMER_HOME' && (
+                <button
+                  onClick={() => navigate('CUSTOMER_STORE_REGISTER')}
+                  className="border border-blue-600 text-blue-600 bg-white hover:bg-blue-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
+                >
+                  สมัครร้านค้า
+                </button>
+              )}
               <button
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center hover:bg-blue-700 transition-colors whitespace-nowrap"
               >
                 <User className="w-4 h-4 mr-2" />
                 B1
               </button>
               <button
                 onClick={handleLogout}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-slate-400 hover:text-slate-600 transition-colors"
               >
                 <LogOut className="w-5 h-5" />
               </button>

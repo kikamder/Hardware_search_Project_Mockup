@@ -9,7 +9,8 @@ import SelectHardware from './pages/customer/SelectHardware';
 import FindStore from './pages/customer/FindStore';
 import SavedStores from './pages/customer/SavedStores';
 import SavedDevices from './pages/customer/SavedDevices';
-import DeviceFolders from './pages/customer/DeviceFolders';
+import StoreProducts from './pages/customer/StoreProducts';
+import StoreRegistration from './pages/customer/StoreRegistration';
 
 // Store
 import StoreLayout from './layouts/StoreLayout';
@@ -20,7 +21,8 @@ import LocationManagement from './pages/store/LocationManagement';
 
 // Admin
 import AdminLayout from './layouts/AdminLayout';
-import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminUsers from './pages/admin/AdminUsers';
+import AdminStores from './pages/admin/AdminStores';
 
 function AppRouter() {
   const { role, currentView } = useAppContext();
@@ -37,7 +39,8 @@ function AppRouter() {
         {currentView === 'CUSTOMER_FIND_STORE' && <FindStore />}
         {currentView === 'CUSTOMER_SAVED_STORES' && <SavedStores />}
         {currentView === 'CUSTOMER_SAVED_DEVICES' && <SavedDevices />}
-        {currentView === 'CUSTOMER_DEVICE_FOLDERS' && <DeviceFolders />}
+        {currentView === 'CUSTOMER_STORE_PRODUCTS' && <StoreProducts />}
+        {currentView === 'CUSTOMER_STORE_REGISTER' && <StoreRegistration />}
       </CustomerLayout>
     );
   }
@@ -56,7 +59,8 @@ function AppRouter() {
   if (role === 'ADMIN') {
     return (
       <AdminLayout>
-        {currentView === 'ADMIN_DASHBOARD' && <AdminDashboard />}
+        {currentView === 'ADMIN_USERS' && <AdminUsers />}
+        {currentView === 'ADMIN_STORES' && <AdminStores />}
       </AdminLayout>
     );
   }

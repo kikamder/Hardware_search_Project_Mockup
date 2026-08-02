@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { mockStores } from '../../data';
 import { Star, Heart } from 'lucide-react';
+import StoreDetailsModal from '../../components/StoreDetailsModal';
 
 export default function SavedStores() {
   const [savedStores, setSavedStores] = useState(mockStores);
+  const [selectedStoreModal, setSelectedStoreModal] = useState<any>(null);
 
   const toggleHeart = (id: string) => {
     setSavedStores(prev => 
@@ -32,7 +34,9 @@ export default function SavedStores() {
               </div>
             </div>
             <div className="flex items-center">
-              <button className="border border-white bg-white/50 text-blue-600 font-medium rounded-2xl px-6 py-3 hover:bg-white/80 transition-all shadow-sm mr-6">
+              <button 
+                onClick={() => setSelectedStoreModal(store)}
+                className="border border-white bg-white/50 text-blue-600 font-medium rounded-2xl px-6 py-3 hover:bg-white/80 transition-all shadow-sm mr-6">
                 ดูหน้าร้านค้า
               </button>
               <button 
@@ -45,6 +49,12 @@ export default function SavedStores() {
           </div>
         ))}
       </div>
+
+      <StoreDetailsModal 
+        isOpen={!!selectedStoreModal} 
+        onClose={() => setSelectedStoreModal(null)} 
+        store={selectedStoreModal} 
+      />
     </div>
   );
 }

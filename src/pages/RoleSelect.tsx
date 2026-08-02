@@ -44,7 +44,7 @@ export default function RoleSelect() {
           </button>
 
           <button
-            onClick={() => { setRole('ADMIN'); navigate('ADMIN_DASHBOARD'); }}
+            onClick={() => { setRole('ADMIN'); navigate('ADMIN_USERS'); }}
             className="flex flex-col items-center p-8 bg-white/50 backdrop-blur-md border border-white rounded-3xl hover:bg-white/80 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 group"
           >
             <ShieldAlert className="w-16 h-16 text-purple-500 mb-4 group-hover:scale-110 transition-transform" />

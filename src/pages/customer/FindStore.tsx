@@ -1,10 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useAppContext } from '../../AppContext';
 import { mockHardware, mockStores } from '../../data';
-import { Cpu, SquareDashedBottom, MonitorPlay, MemoryStick, HardDrive, Battery, Fan, Store as StoreIcon, MapPin, Star, AlertCircle } from 'lucide-react';
+import { Cpu, SquareDashedBottom, MonitorPlay, MemoryStick, HardDrive, Battery, Fan, Store as StoreIcon, MapPin, Star, AlertCircle, Heart } from 'lucide-react';
+import StoreDetailsModal from '../../components/StoreDetailsModal';
 
 export default function FindStore() {
   const { navigate, selectedHardwareIds } = useAppContext();
+  const [selectedStoreModal, setSelectedStoreModal] = useState<any>(null);
 
   const cats = [
     { id: 'CPU', label: 'CPU', icon: Cpu },
@@ -135,9 +137,15 @@ export default function FindStore() {
                   {/* Items in store */}
                   <div className="border border-white bg-white/40 rounded-2xl overflow-hidden mb-6">
                     {availableSelectedItems.map((item, i) => (
-                      <div key={item.id} className={`flex justify-between p-4 ${i !== availableSelectedItems.length - 1 ? 'border-b border-white' : ''}`}>
+                      <div key={item.id} className={`flex justify-between items-center p-4 ${i !== availableSelectedItems.length - 1 ? 'border-b border-white' : ''}`}>
                         <div className="text-sm text-slate-700">{item.brand} {item.model}</div>
-                        <div className="text-sm font-bold text-red-500">{item.price}</div>
+                        <div className="flex items-center gap-3">
+                          <div className="text-sm font-bold text-red-500">{item.price}</div>
+                          <button className="flex items-center gap-1 px-3 py-1 border border-slate-200 text-blue-500 rounded-xl hover:bg-blue-50 transition-colors whitespace-nowrap text-sm font-medium bg-white shadow-sm">
+                            <Heart className="w-4 h-4" />
+                            บันทึก
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -149,7 +157,9 @@ export default function FindStore() {
                       <span className="text-blue-600 font-bold text-2xl">{totalPrice}</span>
                       <span className="text-slate-600 ml-2">บาท</span>
                     </div>
-                    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-2xl flex items-center justify-center transition-all shadow-lg shadow-blue-200">
+                    <button 
+                      onClick={() => setSelectedStoreModal(store)}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-2xl flex items-center justify-center transition-all shadow-lg shadow-blue-200">
                       <StoreIcon className="w-5 h-5 mr-2" />
                       ดูหน้าร้านค้า
                     </button>
@@ -181,6 +191,12 @@ export default function FindStore() {
         </div>
 
       </div>
+
+      <StoreDetailsModal 
+        isOpen={!!selectedStoreModal} 
+        onClose={() => setSelectedStoreModal(null)} 
+        store={selectedStoreModal} 
+      />
     </div>
   );
 }

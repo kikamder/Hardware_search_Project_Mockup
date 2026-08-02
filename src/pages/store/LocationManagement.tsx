@@ -27,14 +27,6 @@ export default function LocationManagement() {
                 readOnly
               ></textarea>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">ละติจูด (Latitude)</label>
-              <input type="text" defaultValue="13.862995" className="w-full border border-slate-200 rounded-lg px-4 py-2.5 outline-none focus:border-blue-500" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">ลองจิจูด (Longitude)</label>
-              <input type="text" defaultValue="100.606681" className="w-full border border-slate-200 rounded-lg px-4 py-2.5 outline-none focus:border-blue-500" />
-            </div>
             
             <button className="w-fit bg-white/50 border border-white text-blue-600 hover:bg-white/80 font-medium rounded-xl px-4 py-2 flex items-center transition-all shadow-sm">
               <MapPin className="w-4 h-4 mr-2" />
