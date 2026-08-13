@@ -1,12 +1,26 @@
 import React, { useMemo, useState } from 'react';
 import { useAppContext } from '../../AppContext';
 import { mockHardware, mockStores } from '../../data';
-import { Cpu, SquareDashedBottom, MonitorPlay, MemoryStick, HardDrive, Battery, Fan, Store as StoreIcon, MapPin, Star, AlertCircle, Heart } from 'lucide-react';
+import { Cpu, SquareDashedBottom, MonitorPlay, MemoryStick, HardDrive, Battery, Fan, Store as StoreIcon, MapPin, Star, AlertCircle, Heart, CheckCircle2 } from 'lucide-react';
 import StoreDetailsModal_Customer from '../../components/StoreDetailsModal_Customer';
+import HardwareSummaryModal from '../../components/HardwareSummaryModal';
 
 export default function FindStore() {
   const { navigate, selectedHardwareIds } = useAppContext();
   const [selectedStoreModal, setSelectedStoreModal] = useState<any>(null);
+  const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
+  const [savedItems, setSavedItems] = useState<{item: any; store: any}[]>([]);
+
+  const toggleSaveItem = (item: any, store: any) => {
+    setSavedItems(prev => {
+      const isSaved = prev.some(saved => saved.item.id === item.id && saved.store.id === store.id);
+      if (isSaved) {
+        return prev.filter(saved => !(saved.item.id === item.id && saved.store.id === store.id));
+      } else {
+        return [...prev, { item, store }];
+      }
+    });
+  };
 
   const cats = [
     { id: 'CPU', label: 'CPU', icon: Cpu },
@@ -81,13 +95,23 @@ export default function FindStore() {
       <div className="flex-1 flex flex-col h-full overflow-hidden">
         
         {/* Selected Items summary header */}
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-start mb-4">
           <h2 className="text-lg font-bold text-slate-800">พบร้านค้าที่ตรงกับสินค้าที่เลือก {availableSelectedItems.length} รายการ</h2>
-          <div className="flex items-center">
-            <span className="text-sm text-slate-500 mr-2">เรียงลำดับจาก :</span>
-            <select className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm bg-white outline-none">
-              <option>ราคาต่ำ - สูง</option>
-            </select>
+          <div className="flex flex-col items-end gap-3">
+            <div className="flex items-center">
+              <span className="text-sm text-slate-500 mr-2">เรียงลำดับจาก :</span>
+              <select className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm bg-white outline-none">
+                <option>ราคาต่ำ - สูง</option>
+              </select>
+            </div>
+            {savedItems.length > 0 && (
+              <button 
+                onClick={() => setIsSummaryModalOpen(true)}
+                className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-5 py-2 rounded-lg font-medium shadow-sm transition-colors"
+              >
+                สรุปรายการฮาร์ดแวร์ ({savedItems.length})
+              </button>
+            )}
           </div>
         </div>
 
@@ -136,18 +160,28 @@ export default function FindStore() {
 
                   {/* Items in store */}
                   <div className="border border-white bg-white/40 rounded-2xl overflow-hidden mb-6">
-                    {availableSelectedItems.map((item, i) => (
-                      <div key={item.id} className={`flex justify-between items-center p-4 ${i !== availableSelectedItems.length - 1 ? 'border-b border-white' : ''}`}>
-                        <div className="text-sm text-slate-700">{item.brand} {item.model}</div>
-                        <div className="flex items-center gap-3">
-                          <div className="text-sm font-bold text-red-500">{item.price}</div>
-                          <button className="flex items-center gap-1 px-3 py-1 border border-slate-200 text-blue-500 rounded-xl hover:bg-blue-50 transition-colors whitespace-nowrap text-sm font-medium bg-white shadow-sm">
-                            <Heart className="w-4 h-4" />
-                            บันทึก
-                          </button>
+                    {availableSelectedItems.map((item, i) => {
+                      const isSaved = savedItems.some(saved => saved.item.id === item.id && saved.store.id === store.id);
+                      return (
+                        <div key={item.id} className={`flex justify-between items-center p-4 ${i !== availableSelectedItems.length - 1 ? 'border-b border-white' : ''}`}>
+                          <div className="text-sm text-slate-700">{item.brand} {item.model}</div>
+                          <div className="flex items-center gap-3">
+                            <div className="text-sm font-bold text-red-500">{item.price}</div>
+                            <button 
+                              onClick={() => toggleSaveItem(item, store)}
+                              className={`flex items-center gap-1 px-3 py-1 border rounded-xl transition-colors whitespace-nowrap text-sm font-medium shadow-sm ${
+                                isSaved 
+                                ? 'bg-blue-50 border-blue-200 text-blue-600' 
+                                : 'bg-white border-slate-200 text-blue-500 hover:bg-blue-50'
+                              }`}
+                            >
+                              <Heart className={`w-4 h-4 ${isSaved ? 'fill-current text-blue-600' : ''}`} />
+                              บันทึก
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   {/* Total and Action */}
@@ -191,6 +225,12 @@ export default function FindStore() {
         </div>
 
       </div>
+
+      <HardwareSummaryModal 
+        isOpen={isSummaryModalOpen}
+        onClose={() => setIsSummaryModalOpen(false)}
+        savedItems={savedItems}
+      />
 
       <StoreDetailsModal_Customer 
         isOpen={!!selectedStoreModal} 
