@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Plus, Search, Edit2, Trash2, RotateCcw } from 'lucide-react';
+import AddProductCpuModal from '../../components/AddProductCpuModal';
 
 export default function ProductManagement() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(['All']);
+  const [isAddCpuModalOpen, setIsAddCpuModalOpen] = useState(false);
 
   const categories = [
     { id: 'All', label: 'All' },
@@ -15,7 +17,7 @@ export default function ProductManagement() {
     { id: 'PSU', label: 'PSU' },
   ];
 
-  const products = [
+  const initialProducts = [
     { id: 1, name: 'Intel Core i7-14700K', cat: 'CPU', brand: 'Intel', price: '14,900',  status: 'พร้อมขาย' },
     { id: 2, name: 'AMD Ryzen 7 7800X3D', cat: 'CPU', brand: 'AMD', price: '15,900',  status: 'หมดสต๊อก' },
     { id: 3, name: 'MSI GeForce RTX 4070 SUPER', cat: 'VGA', brand: 'MSI', price: '24,900', status: 'พร้อมขาย' },
@@ -24,6 +26,8 @@ export default function ProductManagement() {
     { id: 6, name: 'Corsair Vengeance 32GB (16x2) DDR5 6000', cat: 'RAM', brand: 'Corsair', price: '5,990',  status: 'พร้อมขาย' },
     { id: 7, name: 'WD Black SN850X 1TB NVMe', cat: 'STORAGE', brand: 'Western Digital', price: '4,390',  status: 'พร้อมขาย' },
   ];
+
+  const [productList, setProductList] = useState(initialProducts);
 
   const toggleCategory = (catId: string) => {
     if (catId === 'All') {
@@ -42,7 +46,7 @@ export default function ProductManagement() {
     });
   };
 
-  const filteredProducts = products.filter(p => {
+  const filteredProducts = productList.filter(p => {
     if (selectedCategories.includes('All')) return true;
     return selectedCategories.includes(p.cat) || (p.cat === 'STORAGE' && selectedCategories.includes('Storage')) || (p.cat === 'MAINBOARD' && selectedCategories.includes('Mainboard'));
   });
@@ -54,7 +58,10 @@ export default function ProductManagement() {
           <h1 className="text-2xl font-bold text-slate-800">จัดการสินค้า Hardware</h1>
           <p className="text-slate-500 text-sm mt-1">เพิ่ม แก้ไข หรือลบสินค้าในร้านของคุณ</p>
         </div>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-2xl px-5 py-2.5 flex items-center transition-all shadow-lg shadow-blue-200">
+        <button 
+          onClick={() => setIsAddCpuModalOpen(true)}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-2xl px-5 py-2.5 flex items-center transition-all shadow-lg shadow-blue-200 cursor-pointer"
+        >
           <Plus className="w-5 h-5 mr-1" />
           เพิ่มสินค้า
         </button>
@@ -139,7 +146,12 @@ export default function ProductManagement() {
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-center space-x-2">
                         <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-xl border border-blue-200 transition-colors"><Edit2 className="w-4 h-4" /></button>
-                        <button className="p-2 text-red-600 hover:bg-red-50 rounded-xl border border-red-200 transition-colors"><Trash2 className="w-4 h-4" /></button>
+                        <button 
+                          onClick={() => setProductList(prev => prev.filter(item => item.id !== p.id))}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-xl border border-red-200 transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -156,7 +168,7 @@ export default function ProductManagement() {
                <span>รายการ</span>
              </div>
              <div className="flex items-center space-x-4">
-               <span>1-10 จาก 45 รายการ</span>
+               <span>1-{filteredProducts.length} จาก {filteredProducts.length} รายการ</span>
                <div className="flex space-x-1">
                  <button className="w-8 h-8 rounded hover:bg-slate-200 flex items-center justify-center">{'<'}</button>
                  <button className="w-8 h-8 rounded border border-blue-500 text-blue-600 font-medium flex items-center justify-center bg-white">1</button>
@@ -168,6 +180,14 @@ export default function ProductManagement() {
           </div>
         </div>
       </div>
+
+      <AddProductCpuModal 
+        isOpen={isAddCpuModalOpen}
+        onClose={() => setIsAddCpuModalOpen(false)}
+        onSave={(newProduct) => {
+          setProductList(prev => [newProduct, ...prev]);
+        }}
+      />
     </div>
   );
 }
